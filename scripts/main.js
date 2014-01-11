@@ -1,8 +1,14 @@
-var DataModel = Backbone.Model.extend({
+var DataCollection = Backbone.Collection.extend({
   days: function() {
     return _.map(this.get('dates'), function (d) {
       return new Date(d).toDateString();
     });
+  },
+  discomfortIndexes: function () {
+    return _.map(this.models, function(model) {
+      var T = model.get('temp_out'), RH = model.get('hum_out');
+      return Math.round(( T-0.55*(1-0.01*RH)*(T-14.4) )* 100)/100;
+    })
   }
 });
 function getUniqueDays() {
@@ -19,89 +25,93 @@ function getUniqueDays() {
 }
 
 function avg(array) {
-  return _.reduce(array, function(memo, num){
+  return Math.round( (_.reduce(array, function(memo, num){
     return memo + num;
-  }, 0) / array.length;
+  }, 0) / array.length) *100 ) / 100;
 };
 function getDailyMetrics(array, date) {
- return _.pluck(_.where(array, {'date':date}), 'hum_out');
+ return {
+   'date': date,
+   'hum_out': avg(_.pluck(_.where(array, {'date':date}), 'hum_out')),
+   'temp_out': avg(_.pluck(_.where(array, {'date':date}), 'temp_out'))
+  }
 }
-function aggregateMetrics(key) {
-  return _.map(data.get('dates'), function(date) {
-    return avg(getDailyMetrics(raw, date, key));
+function aggregateMetrics() {
+  return _.map(dates, function(date) {
+    return getDailyMetrics(raw, date);
   })
 };
-
-var data = new DataModel({
-  dates: getUniqueDays()
-});
-data.set({hum_out:  aggregateMetrics('hum_out'),
-          temp_out: aggregateMetrics('temp_out')})
+var dates = getUniqueDays();
+var data = new DataCollection();
+data.set(aggregateMetrics())
 
 $(function () {
-  $('#container').highcharts({
+  $('#humidity').highcharts({
     chart: {
       backgroundColor: '#FAFAFA'
     },
     xAxis: {
       tickInterval: 3,
-      categories: data.days()
-    },
-            yAxis: {
-                gridLineColor: '#ddd',
-                title: false,
-                labels: {
-                    style:{
-                          fontFamily:'Helvetica-Neue, Helvetica, Arial, sans-serif',
-                          fontSize:'13px',
-                          color:'#777777'
-                    }
-                },
-            },
-    title: { text: null },
-    plotOptions : {
-        series : {
-            shadow : false,
-            color: "#7fbcd8",
-            marker: {
-                fillColor: '#FFFFFF',
-                lineWidth: 2,
-                lineColor: 'red'
-            }
+      categories: dates,
+      labels: {
+        formatter: function () {
+          return new Date(this.value).toDateString();
         }
+      }
+    },
+    yAxis: {
+      gridLineColor: '#ddd',
+      title: false,
+      labels: {
+        style:{
+          fontFamily:'Helvetica-Neue, Helvetica, Arial, sans-serif',
+          fontSize:'13px',
+          color:'#777777'
+        }
+      },
+    },
+    title: { text: 'Discomfort Index' },
+    plotOptions : {
+      series : {
+        shadow : false,
+        color: "#796466",
+        marker: {
+          fillColor: '#FFFFFF',
+          lineWidth: 2,
+          lineColor: 'red'
+        },
+        events: {
+          mouseOut: function () {
+            $('div.stats span.hum').text(0)
+            $('div.stats span.date').text('')
+            $('div.stats span.temp').text('')
+          }
+        }
+      }
     },
     series: [{
-      name: 'Humidity',
       showInLegend: true,
       fillOpacity: 0.25,
       type: 'area' ,
       lineWidth:3,
       pointPadding: 50,
       marker: {
-          lineWidth: 3,
-          lineColor: '#7fbcd8',
-          fillColor: 'white',
-          radius: 4
+        lineWidth: 3,
+        lineColor: '#47535E',
+        fillColor: 'white',
+        radius: 4
       },
-      data: data.get('hum_out')
+      data: data.discomfortIndexes()
     }],
     tooltip: {
-        borderWidth: 0,
-        backgroundColor:"rgba(0,0,0,0.7)",
-        borderRadius: 3,
-        shadow: false,
-        crosshairs:true,
-        style:{
-            textShadow: "none",
-            color:"#ffffff",
-            fontFamily: 'Helvetica-Neue, Helvetica, Arial, sans-serif'
-        },
-        formatter: function() {
-            var tooltip = '<b>'+this.x+'</b><br/>';
-            tooltip += this.y;
-
-            return tooltip;
-        }
+      style:{display: 'none'},
+      formatter: function() {
+        var model = data.where({date: this.x})[0];
+        $('span.date').text(new Date(this.x).toDateString());
+        $('span.hum').text(model.get('hum_out'));
+        $('span.discomfort').text(this.y);
+        $('span.temp').text(model.get('temp_out'));
+      }
     },
     credits:{enabled:false}
   });

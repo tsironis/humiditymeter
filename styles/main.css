@@ -27,3 +27,38 @@ body {
     color: #000;
     padding: 0.2em 0;
 }
+
+h1, .stats {
+  font-family: 'Exo 2', sans-serif;
+  text-align: right;
+  display: inline-block;
+}
+h1 {
+  margin: 0;
+}
+.stats {
+  float:right;
+}
+.stats p {
+  margin: 0 20px;
+  width: 100px;
+  font-family: 'Exo 2', sans-serif;
+  display: inline-block;
+}
+span.description {
+  display: block;
+}
+
+.hum, .discomfort, .temp {
+  font-weight: bold;
+  font-size: 36px;
+}
+.small {
+  font-size: 26px;
+  margin-left: 5px;
+}
+.date {
+  font-size: 18px;
+  position: relative;
+  top: -8px;
+}

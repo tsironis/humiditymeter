@@ -15,6 +15,7 @@
         <!-- endbower -->
         <!-- endbuild -->
         <!-- build:css(.tmp) styles/main.css -->
+        <link href='http://fonts.googleapis.com/css?family=Exo+2:400,500italic,600' rel='stylesheet' type='text/css'>
         <link rel="stylesheet" href="styles/main.css">
         <!-- endbuild -->
     </head>
@@ -22,8 +23,27 @@
         <!--[if lt IE 10]>
             <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
-        <h1>Humidity meter</h1>
-        <div id="container">
+        <h1>Humidity<br>meter</h1>
+        <div class="stats">
+        <p>
+        <span class="date"></span>
+        </p>
+        <p>
+        <span class="discomfort">0</span><span class="small"></span>
+          <span class="description">discomfort</span>
+        </p>
+        <p>
+        <span class="hum">0</span><span class="small">%</span>
+          <span class="description">humidity</span>
+        </p>
+        <p>
+        <span class="temp">0</span><span class="small">°C</span>
+          <span class="description">temperature</span>
+        </p>
+        </div>
+        <div id="humidity">
+        </div>
+        <div id="temperature">
         </div>
         <script src="scripts/jquery/jquery.js"></script>
         <script src="scripts/underscore/underscore.js"></script>
