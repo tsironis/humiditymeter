@@ -43,22 +43,16 @@ function dailyAvg(date, key) {
   return avg(_.pluck(_.where(raw, {'date':date}), key))
 }
 
-/* Gets daily metrics [Object] for specific date */
-function getDailyMetrics(date) {
- return {
-   'date': date,
-   'hum_out': dailyAvg(date, 'hum_out'),
-   'temp_out': dailyAvg(date, 'temp_out')
-  }
-}
-
 /* Aggregates all daily metrics for all dates */
 function aggregateMetrics() {
   return _.map(dates, function(date) {
-    return getDailyMetrics(date);
+    return {
+     'date': date,
+     'hum_out': dailyAvg(date, 'hum_out'),
+     'temp_out': dailyAvg(date, 'temp_out')
+    }
   })
 };
-
 
 /* Instantiates dates array and our data collection */
 var dates = getUniqueDays();
