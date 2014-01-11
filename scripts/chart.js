@@ -61,6 +61,7 @@ $(function () {
     tooltip: {
       style:{display: 'none'},
       formatter: function() {
+        $('.tip').hide();
         var model = data.where({date: this.x})[0];
         $('span.date').text(new Date(this.x).toDateString());
         $('span.hum').text(model.get('hum_out'));
