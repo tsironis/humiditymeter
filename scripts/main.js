@@ -70,7 +70,7 @@ $(function () {
         }
       },
     },
-    title: { text: 'Discomfort Index' },
+    title: { text: '' },
     plotOptions : {
       series : {
         shadow : false,
@@ -85,12 +85,14 @@ $(function () {
             $('div.stats span.hum').text(0)
             $('div.stats span.date').text('')
             $('div.stats span.temp').text('')
+            $('div.stats i').hide();
           }
         }
       }
     },
     series: [{
       showInLegend: true,
+      name: 'Discomfort Index',
       fillOpacity: 0.25,
       type: 'area' ,
       lineWidth:3,
@@ -111,6 +113,14 @@ $(function () {
         $('span.hum').text(model.get('hum_out'));
         $('span.discomfort').text(this.y);
         $('span.temp').text(model.get('temp_out'));
+        $('.stats i').hide();
+        if(this.y < 21) {
+          $('i.fa-smile-o').show()
+        } else if(this.y === 21 || this.y < 24) {
+          $('i.fa-meh-o').show()
+        } else {
+          $('i.fa-frown-o').show()
+        }
       }
     },
     credits:{enabled:false}

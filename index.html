@@ -17,14 +17,21 @@
         <!-- build:css(.tmp) styles/main.css -->
         <link href='http://fonts.googleapis.com/css?family=Exo+2:400,500italic,600' rel='stylesheet' type='text/css'>
         <link rel="stylesheet" href="styles/main.css">
+        <link rel="stylesheet" href="styles/font-awesome.min.css">
         <!-- endbuild -->
     </head>
     <body>
         <!--[if lt IE 10]>
             <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
+        <header>
         <h1>Humidity<br>meter</h1>
         <div class="stats">
+        <p>
+        <i class="fa fa-smile-o" style="display:none;"></i>
+        <i class="fa fa-meh-o" style="display:none;"></i>
+        <i class="fa fa-frown-o" style="display:none;"></i>
+        </p>
         <p>
         <span class="date"></span>
         </p>
@@ -41,10 +48,13 @@
           <span class="description">temperature</span>
         </p>
         </div>
+        </header>
+        <section>
         <div id="humidity">
         </div>
         <div id="temperature">
         </div>
+      </section>
         <script src="scripts/jquery/jquery.js"></script>
         <script src="scripts/underscore/underscore.js"></script>
         <script src="scripts/backbone/backbone.js"></script>
