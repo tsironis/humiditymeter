@@ -1,8 +1,8 @@
 body {
     margin: 0; padding: 0;
     background: #fafafa;
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     color: #333;
+  font-family: 'Exo 2', sans-serif;
 }
 
 .hero-unit {
@@ -46,7 +46,6 @@ h1 {
 .stats p {
   margin: 0 20px;
   width: 100px;
-  font-family: 'Exo 2', sans-serif;
   display: inline-block;
 }
 span.description {
@@ -79,4 +78,9 @@ span.description {
 }
 .stats .fa-frown-o {
   color: #D73B37;
+}
+.epilogue {
+  text-align: center;
+  font-style: italic;
+  color: #777;
 }
