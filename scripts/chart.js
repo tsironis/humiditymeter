@@ -37,6 +37,7 @@ $(function () {
           mouseOut: function () {
             $('div.stats span.hum').text(0);
             $('div.stats span.temp').text(0);
+            $('div.stats span.discomfort').text(0);
             $('div.stats span.date').text('');
             $('div.stats i').hide();
           }
