@@ -21,14 +21,9 @@ var DataCollection = Backbone.Collection.extend({
 
 /* Returns array with unique days */
 function getUniqueDays() {
-  var dates = [], previous;
-  _.each(raw, function(d) {
-    if(d.date !== previous) {
-      previous = d.date;
-      dates.push(d.date);
-    }
-  });
-  return dates;
+  return _.uniq(_.map(raw, function (d) {
+    return d.date
+  }));
 }
 
 /* Average helper function */
